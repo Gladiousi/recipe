@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import 'aos/dist/aos.css';
+
+@theme {
+  --color-primary: #10b981;
+  --color-secondary: #3b82f6;
+  --radius-lg: 0.5rem;
+}
+
+@keyframes strikethrough {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.line-through-animated::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  background: currentColor;
+  animation: strikethrough 0.3s ease-in-out forwards;
+}
