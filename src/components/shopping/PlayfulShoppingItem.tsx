@@ -102,12 +102,6 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
               )}
             />
           </motion.div>
-
-          {item.is_checked && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="h-2 w-2 rounded-full bg-primary/90 animate-ping" />
-            </div>
-          )}
         </div>
 
         <div className="flex-1 relative min-w-0">
