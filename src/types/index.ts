@@ -109,3 +109,13 @@ export interface RegisterData {
   first_name?: string;
   last_name?: string;
 }
+
+export interface GroupInvitationFromBackend {
+  id: number;
+  group: number;
+  group_name: string;
+  inviter: User;
+  invitee: User;
+  status: 'pending' | 'accepted' | 'rejected';
+  created_at: string;
+}

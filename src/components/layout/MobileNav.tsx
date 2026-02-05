@@ -14,6 +14,7 @@ const MobileNav = () => {
     { path: '/groups', icon: Users, label: 'Группы' },
     { path: '/notifications', icon: Bell, label: 'Уведомления' },
     { path: '/profile', icon: UserIcon, label: 'Профиль' },
+    { path: '/notifications', icon: Bell, label: 'Уведомления' }
   ];
 
   return (

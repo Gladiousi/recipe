@@ -1,5 +1,29 @@
 import api from './axios';
-import { Group, GroupInvitation } from '@/types';
+import { Group } from '@/types';
+
+interface GroupInvitationResponse {
+  id: number;
+  group: number;
+  group_name: string;
+  inviter: {
+    id: number;
+    username: string;
+    email: string;
+    first_name?: string;
+    last_name?: string;
+    avatar?: string;
+  };
+  invitee: {
+    id: number;
+    username: string;
+    email: string;
+    first_name?: string;
+    last_name?: string;
+    avatar?: string;
+  };
+  status: string;
+  created_at: string;
+}
 
 export const groupsAPI = {
   getAll: async () => {
@@ -31,32 +55,28 @@ export const groupsAPI = {
   },
 
   removeMember: async (groupId: number, userId: number) => {
-    await api.delete(`/groups/${groupId}/remove_member/`, {
-      data: { user_id: userId },
-    });
-  },
-
-  // Приглашения
-  getInvitations: async () => {
-    const response = await api.get<GroupInvitation[]>('/invitations/');
-    return response.data;
+    await api.post(`/groups/${groupId}/remove_member/`, { user_id: userId });
   },
 
   sendInvitation: async (groupId: number, username: string) => {
-    const response = await api.post<GroupInvitation>('/invitations/', {
-      group: groupId,
+    const response = await api.post(`/groups/${groupId}/send_invitation/`, {
       invitee_username: username,
     });
     return response.data;
   },
 
-  acceptInvitation: async (id: number) => {
-    const response = await api.post(`/invitations/${id}/accept/`);
+  getInvitations: async () => {
+    const response = await api.get<GroupInvitationResponse[]>('/groups/invitations/');
     return response.data;
   },
 
-  declineInvitation: async (id: number) => {
-    const response = await api.post(`/invitations/${id}/decline/`);
+  acceptInvitation: async (invitationId: number) => {
+    const response = await api.post(`/groups/invitations/${invitationId}/accept/`);
+    return response.data;
+  },
+
+  declineInvitation: async (invitationId: number) => {
+    const response = await api.post(`/groups/invitations/${invitationId}/decline/`);
     return response.data;
   },
 };
