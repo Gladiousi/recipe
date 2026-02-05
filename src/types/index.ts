@@ -77,7 +77,10 @@ export interface Recipe {
   servings?: number;
   is_pinned: boolean;
   ingredients: RecipeIngredient[];
-  created_by: User;
+  created_by: {
+    id: number;
+    username: string;
+  };
   created_at: string;
   updated_at: string;
 }
@@ -85,7 +88,7 @@ export interface Recipe {
 export interface RecipeIngredient {
   id: number;
   name: string;
-  quantity?: number;
+  quantity?: number | null;
   unit?: string;
   order: number;
   created_at: string;
@@ -118,4 +121,13 @@ export interface GroupInvitationFromBackend {
   invitee: User;
   status: 'pending' | 'accepted' | 'rejected';
   created_at: string;
+}
+
+export interface RecipeForm {
+  title: string;
+  description: string;
+  cooking_time?: string;
+  servings?: string;
+  image?: FileList;
+  ingredients: RecipeIngredient[];
 }

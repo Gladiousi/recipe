@@ -52,7 +52,6 @@ const RecipeCard = ({ recipe, onUpdate, onDelete, index }: RecipeCardProps) => {
         data-aos-delay={index * 50}
         onClick={() => navigate(`/recipe/${recipe.id}`)}
       >
-        {/* Image */}
         {recipe.image ? (
           <div className="relative h-48 overflow-hidden bg-muted">
             <img
