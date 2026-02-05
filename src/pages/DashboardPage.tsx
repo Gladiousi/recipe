@@ -1,12 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useGroupStore } from '@/lib/store/groupStore';
 import { useAuthStore } from '@/lib/store/authStore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users } from 'lucide-react';
+import { Plus, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import CreateGroupDialog from '@/components/groups/CreateGroupDialog';
 
 const DashboardPage = () => {
   const { user } = useAuthStore();
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const { groups, fetchGroups } = useGroupStore();
 
   useEffect(() => {
@@ -15,54 +18,17 @@ const DashboardPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-20 md:pb-6">
-      {/* //TODO: перекинуть в группу */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up">
-        <Card className="border-border shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Групп</p>
-                <p className="text-3xl font-bold text-primary">{groups.length}</p>
-              </div>
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Списков покупок</p>
-                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">0</p>
-              </div>
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                <ShoppingBag className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Рецептов</p>
-                <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">0</p>
-              </div>
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center">
-                <ChefHat className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div> */}
-
       <div data-aos="fade-up" data-aos-delay="100">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl md:text-2xl font-bold">Ваши группы</h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setIsCreateOpen(true)}
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
         </div>
 
         {groups.length === 0 ? (
@@ -112,6 +78,7 @@ const DashboardPage = () => {
           </div>
         )}
       </div>
+      <CreateGroupDialog open={isCreateOpen} onOpenChange={setIsCreateOpen} />
     </div>
   );
 };
