@@ -45,7 +45,7 @@ const LoginPage = () => {
           <p className="text-muted-foreground mt-2">Покупки вместе проще</p>
         </div>
 
-        <Card className="shadow-xl border-border">
+        <Card className="shadow-xl border-border py-8">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">Вход</CardTitle>
             <CardDescription>

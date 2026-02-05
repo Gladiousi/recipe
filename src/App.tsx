@@ -30,11 +30,9 @@ function App() {
       easing: 'ease-out',
     });
     
-    // Загружаем пользователя при старте приложения
     loadUser();
   }, [loadUser]);
 
-  // Показываем loader пока загружается пользователь
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">

@@ -100,7 +100,6 @@ const CreateRecipeDialog = ({
       if (data.servings) formData.append('servings', data.servings);
       if (data.image?.[0]) formData.append('image', data.image[0]);
 
-      // Конвертируем ингредиенты
       const ingredientsForBackend = data.ingredients
         .map((ing) => ({
           name: ing.name,
@@ -149,7 +148,6 @@ const CreateRecipeDialog = ({
             </div>
           )}
 
-          {/* Название */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Название рецепта *</label>
             <Input
@@ -163,11 +161,9 @@ const CreateRecipeDialog = ({
             )}
           </div>
 
-          {/* Описание + Markdown toolbar */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Описание *</label>
             
-            {/* Markdown кнопки — адаптивные */}
             <div className="flex flex-wrap gap-1.5">
               <Button
                 type="button"
@@ -234,7 +230,6 @@ const CreateRecipeDialog = ({
             )}
           </div>
 
-          {/* Ингредиенты — мобильная сетка */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Ингредиенты (опционально)</label>
             <div className="space-y-2 max-h-50 overflow-y-auto rounded-lg">

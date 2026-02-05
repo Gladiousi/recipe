@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { ShoppingItem } from '@/types';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -6,6 +8,7 @@ import { Pin, Trash2, Edit } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { shoppingAPI } from '@/lib/api/shopping';
 import EditShoppingItemDialog from './EditShoppingItemDialog';
+import { motion } from 'framer-motion';
 
 interface PlayfulShoppingItemProps {
   item: ShoppingItem;
@@ -14,20 +17,14 @@ interface PlayfulShoppingItemProps {
 }
 
 const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemProps) => {
-  const [isAnimating, setIsAnimating] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
 
   const handleToggleCheck = async () => {
-    setIsAnimating(true);
     try {
       const updated = await shoppingAPI.toggleCheck(item.id);
-      setTimeout(() => {
-        onUpdate(updated);
-        setIsAnimating(false);
-      }, 300);
+      onUpdate(updated);
     } catch (error) {
       console.error('Error toggling item:', error);
-      setIsAnimating(false);
     }
   };
 
@@ -60,27 +57,55 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
 
   return (
     <>
-      <div
+      <motion.div
+        layout
+        layoutId={`shopping-item-${item.id}`}
+        whileHover={{ scale: 1.01, translateX: 2 }}
+        whileTap={{ scale: 0.98 }}
+        animate={{
+          scale: item.is_pinned ? 0.98 : 1,
+          opacity: item.is_pinned ? 0.92 : 1,
+          zIndex: item.is_pinned ? 0 : 1,
+        }}
+        exit={{
+          y: 30,
+          opacity: 0,
+          scale: 0.9,
+          filter: 'blur(2px)',
+        }}
+        transition={{
+          layout: { type: 'spring', stiffness: 260, damping: 26 },
+          default: { duration: 0.22, ease: 'easeOut' },
+        }}
         className={cn(
-          "group relative flex items-start gap-3 p-3 rounded-lg transition-all duration-300 cursor-pointer",
-          "hover:bg-accent/50",
-          item.is_checked && "opacity-60",
-          item.is_pinned && "bg-primary/5 border-l-4 border-primary",
-          isAnimating && "scale-95"
+          'group relative flex items-start gap-3 p-3 rounded-lg cursor-pointer',
+          'transition-colors duration-200',
+          'hover:bg-accent/60',
+          item.is_checked && 'opacity-75',
+          item.is_pinned && 'bg-primary/5 border-l-4 border-primary/80 shadow-sm'
         )}
         onClick={handleToggleCheck}
       >
         <div className="relative shrink-0 mt-0.5">
-          <Checkbox
-            checked={item.is_checked}
-            className={cn(
-              "h-5 w-5 transition-all duration-300",
-              item.is_checked && "border-primary bg-primary"
-            )}
-          />
+          <motion.div
+            initial={false}
+            animate={{ scale: item.is_checked ? 1.03 : 1 }}
+            transition={{ type: 'spring', stiffness: 450, damping: 24 }}
+          >
+            <Checkbox
+              checked={item.is_checked}
+              className={cn(
+                'h-5 w-5 transition-all duration-300 rounded-full',
+                item.is_checked
+                  ? 'border-primary bg-primary shadow-sm'
+                  : 'border-muted-foreground/40'
+              )}
+            />
+          </motion.div>
+
           {item.is_checked && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-1 h-1 bg-primary rounded-full animate-ping" />
+              <span className="h-2 w-2 rounded-full bg-primary/90 animate-ping" />
             </div>
           )}
         </div>
@@ -89,31 +114,42 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
           <div className="relative inline-block">
             <p
               className={cn(
-                "text-base font-medium transition-all duration-300",
-                item.is_checked && "text-muted-foreground"
+                'text-base font-medium transition-all duration-300',
+                item.is_checked && 'text-muted-foreground'
               )}
             >
               {item.name}
             </p>
-            
-            {item.is_checked && (
-              <div
-                className={cn(
-                  "absolute left-0 top-1/2 h-0.5 bg-muted-foreground -translate-y-1/2",
-                  "animate-strikethrough origin-left"
-                )}
-                style={{
-                  animation: isAnimating ? 'strikethrough 0.3s ease-out forwards' : 'none',
-                  width: isAnimating ? '0%' : '100%'
-                }}
+
+            <motion.svg
+              className="pointer-events-none absolute left-0 right-0 top-1/2 h-4 -translate-y-1/2"
+              viewBox="0 0 100 10"
+            >
+              <motion.path
+                d="M2 5 C 20 0, 40 10, 60 5 S 90 0, 98 5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="text-muted-foreground"
+                initial={false}
+                animate={{ pathLength: item.is_checked ? 1 : 0 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
               />
-            )}
+            </motion.svg>
           </div>
-          
+
           {(item.quantity || item.unit) && (
-            <p className="text-xs text-muted-foreground mt-1">
+            <motion.p
+              initial={false}
+              animate={{
+                opacity: item.is_checked ? 0.7 : 1,
+                y: item.is_checked ? 1 : 0,
+              }}
+              transition={{ duration: 0.2 }}
+              className="text-xs text-muted-foreground mt-1"
+            >
               {item.quantity} {item.unit}
-            </p>
+            </motion.p>
           )}
         </div>
 
@@ -121,26 +157,33 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 transition-transform duration-200 hover:scale-105"
             onClick={handleEdit}
           >
             <Edit className="h-4 w-4" />
           </Button>
+
           <Button
             variant="ghost"
             size="icon"
             className={cn(
-              "h-8 w-8",
-              item.is_pinned && "text-primary opacity-100"
+              'h-8 w-8 transition-transform duration-200 hover:scale-105',
+              item.is_pinned && 'text-primary'
             )}
             onClick={handleTogglePin}
           >
-            <Pin className={cn("h-4 w-4", item.is_pinned && "fill-current")} />
+            <motion.span
+              animate={{ rotate: item.is_pinned ? -18 : 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+            >
+              <Pin className={cn('h-4 w-4', item.is_pinned && 'fill-current')} />
+            </motion.span>
           </Button>
+
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 text-destructive"
+            className="h-8 w-8 text-destructive transition-transform duration-200 hover:scale-110"
             onClick={handleDelete}
           >
             <Trash2 className="h-4 w-4" />
@@ -150,7 +193,7 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
         {item.is_pinned && (
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r" />
         )}
-      </div>
+      </motion.div>
 
       <EditShoppingItemDialog
         item={item}

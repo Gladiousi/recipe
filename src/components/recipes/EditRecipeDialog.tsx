@@ -117,7 +117,6 @@ const EditRecipeDialog = ({
       if (data.servings) formData.append('servings', data.servings);
       if (data.image?.[0]) formData.append('image', data.image[0]);
 
-      // Конвертируем ингредиенты
       const ingredientsForBackend = data.ingredients
         .map((ing) => ({
           name: ing.name,

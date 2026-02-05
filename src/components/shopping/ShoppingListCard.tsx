@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { ShoppingList, ShoppingItem } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,6 +15,7 @@ import {
 import ShoppingItemDialog from './ShoppingItemDialog';
 import EditShoppingListDialog from './EditShoppingListDialog';
 import PlayfulShoppingItem from './PlayfulShoppingItem';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 
 interface ShoppingListCardProps {
   list: ShoppingList;
@@ -158,42 +161,46 @@ const ShoppingListCard = ({ list: initialList, onUpdate, onDelete, index }: Shop
             </div>
 
             {allItems.length > 0 ? (
-              <div className="space-y-1">
-                {visibleItems.map((item) => (
-                  <PlayfulShoppingItem
-                    key={item.id}
-                    item={item}
-                    onUpdate={handleItemUpdated}
-                    onDelete={handleItemDeleted}
-                  />
-                ))}
-
-                {hasMoreItems && !expandedItems && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setExpandedItems(true)}
-                    className="w-full mt-2"
-                  >
-                    Показать еще ({allItems.length - 5})
-                  </Button>
-                )}
-
-                {expandedItems && hasMoreItems && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setExpandedItems(false)}
-                    className="w-full mt-2"
-                  >
-                    Свернуть
-                  </Button>
-                )}
-              </div>
+              <LayoutGroup>
+                <motion.div layout className="space-y-1">
+                  <AnimatePresence mode="popLayout">
+                    {visibleItems.map((item) => (
+                      <PlayfulShoppingItem
+                        key={item.id}
+                        item={item}
+                        onUpdate={handleItemUpdated}
+                        onDelete={handleItemDeleted}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+              </LayoutGroup>
             ) : (
               <div className="text-center py-6 text-muted-foreground">
                 <p className="text-sm">Список пуст</p>
               </div>
+            )}
+
+            {hasMoreItems && !expandedItems && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setExpandedItems(true)}
+                className="w-full mt-2"
+              >
+                Показать еще ({allItems.length - 5})
+              </Button>
+            )}
+
+            {expandedItems && hasMoreItems && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setExpandedItems(false)}
+                className="w-full mt-2"
+              >
+                Свернуть
+              </Button>
             )}
           </div>
 

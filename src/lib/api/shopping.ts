@@ -2,7 +2,6 @@ import api from './axios';
 import { ShoppingList, ShoppingItem } from '@/types';
 
 export const shoppingAPI = {
-  // Списки
   getLists: async (groupId?: number) => {
     const response = await api.get<ShoppingList[]>('/shopping/lists/', {
       params: groupId ? { group: groupId } : {},
@@ -34,7 +33,6 @@ export const shoppingAPI = {
     return response.data;
   },
 
-  // Элементы
   getItems: async (shoppingListId: number) => {
     const response = await api.get<ShoppingItem[]>('/shopping/items/', {
       params: { shopping_list: shoppingListId },

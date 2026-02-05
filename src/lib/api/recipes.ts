@@ -2,7 +2,6 @@ import api from './axios';
 import { Recipe, RecipeIngredient } from '@/types';
 
 export const recipesAPI = {
-  // Рецепты
   getAll: async (groupId?: number) => {
     const response = await api.get<Recipe[]>('/recipes/recipes/', {
       params: groupId ? { group: groupId } : {},
@@ -42,7 +41,6 @@ export const recipesAPI = {
     return response.data;
   },
 
-  // Ингредиенты
   getIngredients: async (recipeId: number) => {
     const response = await api.get<RecipeIngredient[]>('/recipes/ingredients/', {
       params: { recipe: recipeId },

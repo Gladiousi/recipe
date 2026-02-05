@@ -1,5 +1,6 @@
+'use client';
 
-import { JSX, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { recipesAPI } from '@/lib/api/recipes';
@@ -114,55 +115,85 @@ const RecipePage = () => {
 
       <Card className="border-border shadow-lg" data-aos="fade-up">
         <CardContent className="p-6 md:p-8">
-          <div className="space-y-1">
-            <ReactMarkdown
-              components={{
-                h1: ({ node, ...props }) => (
-                  <h1
-                    className="text-3xl font-bold mb-4 mt-6 text-foreground"
-                    {...props}
-                  />
-                ),
-                h2: ({ node, ...props }) => (
-                  <h2
-                    className="text-2xl font-bold mb-3 mt-5 text-foreground"
-                    {...props}
-                  />
-                ),
-                h3: ({ node, ...props }) => (
-                  <h3
-                    className="text-xl font-semibold mb-2 mt-4 text-foreground"
-                    {...props}
-                  />
-                ),
-                ul: ({ node, ...props }) => (
-                  <ul
-                    className="list-disc list-inside mb-4 space-y-2"
-                    {...props}
-                  />
-                ),
-                ol: ({ node, ...props }) => (
-                  <ol
-                    className="list-decimal list-inside mb-4 space-y-2"
-                    {...props}
-                  />
-                ),
-                li: ({ node, ...props }) => (
-                  <li className="ml-4 text-foreground" {...props} />
-                ),
-                p: ({ node, ...props }) => (
-                  <p
-                    className="mb-3 text-foreground leading-relaxed"
-                    {...props}
-                  />
-                ),
-                strong: ({ node, ...props }) => (
-                  <strong className="font-semibold" {...props} />
-                ),
-              }}
-            >
-              {recipe.description}
-            </ReactMarkdown>
+          <div className="space-y-8">
+            {/* Описание */}
+            <div className="space-y-1">
+              <ReactMarkdown
+                components={{
+                  h1: ({ node, ...props }) => (
+                    <h1
+                      className="text-3xl font-bold mb-4 mt-6 text-foreground"
+                      {...props}
+                    />
+                  ),
+                  h2: ({ node, ...props }) => (
+                    <h2
+                      className="text-2xl font-bold mb-3 mt-5 text-foreground"
+                      {...props}
+                    />
+                  ),
+                  h3: ({ node, ...props }) => (
+                    <h3
+                      className="text-xl font-semibold mb-2 mt-4 text-foreground"
+                      {...props}
+                    />
+                  ),
+                  ul: ({ node, ...props }) => (
+                    <ul
+                      className="list-disc list-inside mb-4 space-y-2"
+                      {...props}
+                    />
+                  ),
+                  ol: ({ node, ...props }) => (
+                    <ol
+                      className="list-decimal list-inside mb-4 space-y-2"
+                      {...props}
+                    />
+                  ),
+                  li: ({ node, ...props }) => (
+                    <li className="ml-4 text-foreground" {...props} />
+                  ),
+                  p: ({ node, ...props }) => (
+                    <p
+                      className="mb-3 text-foreground leading-relaxed"
+                      {...props}
+                    />
+                  ),
+                  strong: ({ node, ...props }) => (
+                    <strong className="font-semibold" {...props} />
+                  ),
+                }}
+              >
+                {recipe.description}
+              </ReactMarkdown>
+            </div>
+
+            {recipe.ingredients && recipe.ingredients.length > 0 && (
+              <>
+                <div>
+                  <h2 className="text-2xl font-bold mb-6 text-foreground">Ингредиенты</h2>
+                  <div className="space-y-3">
+                    {recipe.ingredients.map((ing) => (
+                      <div key={ing.id} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg hover:bg-muted group">
+                        <div className="shrink-0 w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center mt-0.5">
+                          <span className="text-xs font-semibold text-primary">
+                            {ing.order + 1}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                            {ing.name}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {ing.quantity} {ing.unit}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </CardContent>
       </Card>

@@ -100,7 +100,7 @@ const InviteMemberDialog = ({
           )}
 
           {users.length > 0 && (
-            <div className="space-y-2 max-h-80 overflow-y-auto">
+            <div className="space-y-2 max-h-80 h-full">
               {users.map((user) => (
                 <div
                   key={user.id}

@@ -60,7 +60,7 @@ export interface ShoppingItem {
   quantity?: number;
   unit?: string;
   is_checked: boolean;
-  is_pinned: boolean;  // ДОБАВЛЕНО
+  is_pinned: boolean;
   added_by: User;
   order: number;
   created_at: string;

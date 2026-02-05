@@ -9,7 +9,6 @@ export const api = axios.create({
   },
 });
 
-// Interceptor для добавления токена
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
@@ -23,7 +22,6 @@ api.interceptors.request.use(
   }
 );
 
-// Interceptor для обработки 401 ошибки
 api.interceptors.response.use(
   (response) => response,
   async (error) => {

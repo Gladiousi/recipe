@@ -15,14 +15,13 @@ const RecipesSection = ({ groupId, recipes: initialRecipes, onUpdate }: RecipesS
   const [recipes, setRecipes] = useState<Recipe[]>(initialRecipes);
   const [createOpen, setCreateOpen] = useState(false);
 
-  // Обновляем локальное состояние при изменении props
   useState(() => {
     setRecipes(initialRecipes);
   });
 
   const handleRecipeCreated = (newRecipe: Recipe) => {
-    setRecipes(prev => [newRecipe, ...prev]); // Оптимистичное обновление
-    onUpdate(); // Опционально - для синхронизации с сервером
+    setRecipes(prev => [newRecipe, ...prev]);
+    onUpdate();
   };
 
   const handleRecipeUpdated = (updatedRecipe: Recipe) => {
