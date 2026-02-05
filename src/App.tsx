@@ -21,13 +21,27 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
+  const { loadUser, isLoading } = useAuthStore();
+
   useEffect(() => {
     AOS.init({
       duration: 600,
       once: true,
       easing: 'ease-out',
     });
-  }, []);
+    
+    // Загружаем пользователя при старте приложения
+    loadUser();
+  }, [loadUser]);
+
+  // Показываем loader пока загружается пользователь
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <BrowserRouter>

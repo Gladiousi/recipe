@@ -51,6 +51,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user = await authAPI.getCurrentUser();
       set({ user, isAuthenticated: true, isLoading: false });
     } catch (error) {
+      console.error('Error loading user:', error);
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
       set({ user: null, isAuthenticated: false, isLoading: false });

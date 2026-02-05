@@ -15,17 +15,7 @@ const DashboardPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-20 md:pb-6">
-      {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-6 md:p-8 text-primary-foreground" data-aos="fade-down">
-        <h1 className="text-2xl md:text-4xl font-bold mb-2">
-          Привет, {user?.first_name || user?.username}! 👋
-        </h1>
-        <p className="opacity-90 text-sm md:text-base">
-          Управляй покупками вместе с семьей и друзьями
-        </p>
-      </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up">
         <Card className="border-border shadow-lg">
           <CardContent className="p-6">
@@ -70,7 +60,6 @@ const DashboardPage = () => {
         </Card>
       </div>
 
-      {/* Groups Section */}
       <div data-aos="fade-up" data-aos-delay="100">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl md:text-2xl font-bold">Ваши группы</h2>
