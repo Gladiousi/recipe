@@ -70,8 +70,7 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
         )}
         onClick={handleToggleCheck}
       >
-        {/* Checkbox */}
-        <div className="relative flex-shrink-0 mt-0.5">
+        <div className="relative shrink-0 mt-0.5">
           <Checkbox
             checked={item.is_checked}
             className={cn(
@@ -86,7 +85,6 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
           )}
         </div>
 
-        {/* Content */}
         <div className="flex-1 relative min-w-0">
           <div className="relative inline-block">
             <p
@@ -98,11 +96,10 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
               {item.name}
             </p>
             
-            {/* Animated Strikethrough */}
             {item.is_checked && (
               <div
                 className={cn(
-                  "absolute left-0 top-1/2 h-[2px] bg-muted-foreground -translate-y-1/2",
+                  "absolute left-0 top-1/2 h-0.5 bg-muted-foreground -translate-y-1/2",
                   "animate-strikethrough origin-left"
                 )}
                 style={{
@@ -120,8 +117,7 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
           )}
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="icon"
@@ -151,7 +147,6 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
           </Button>
         </div>
 
-        {/* Pin Indicator */}
         {item.is_pinned && (
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r" />
         )}

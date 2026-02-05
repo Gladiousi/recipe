@@ -66,13 +66,12 @@ const GroupSettingsDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto bg-card border-border">
+      <DialogContent className="sm:max-w-125 max-h-[90vh] overflow-y-auto bg-card border-border">
         <DialogHeader>
           <DialogTitle>Настройки группы</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 mt-4">
-          {/* Group Info */}
           <div>
             <h3 className="font-semibold mb-2">{group.name}</h3>
             <p className="text-sm text-muted-foreground">{group.description || 'Без описания'}</p>
@@ -80,7 +79,6 @@ const GroupSettingsDialog = ({
 
           <Separator className="bg-border" />
 
-          {/* Members */}
           <div>
             <h3 className="font-semibold mb-3">
               Участники ({group.members_count})
@@ -134,7 +132,6 @@ const GroupSettingsDialog = ({
 
           <Separator className="bg-border" />
 
-          {/* Actions */}
           <div className="space-y-2">
             {!isOwner && (
               <Button

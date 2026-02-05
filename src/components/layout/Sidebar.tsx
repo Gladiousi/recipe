@@ -18,7 +18,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Скрыт на мобильных, показан на desktop */}
       <aside className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-16 bottom-0 overflow-y-auto">
         <div className="p-4 space-y-6">
           <div>

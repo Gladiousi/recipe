@@ -47,7 +47,7 @@ const CreateShoppingListDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] bg-card border-border">
+      <DialogContent className="sm:max-w-106.25 bg-card border-border">
         <DialogHeader>
           <DialogTitle>Создать список покупок</DialogTitle>
           <DialogDescription className="text-muted-foreground">

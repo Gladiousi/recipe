@@ -60,8 +60,7 @@ const GroupPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-4 md:space-y-6 pb-20 md:pb-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4" data-aos="fade-down">
+      <div className="flex flex-row items-center justify-between gap-4" data-aos="fade-down">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -85,8 +84,10 @@ const GroupPage = () => {
             onClick={() => setInviteOpen(true)}
             className="flex-1 md:flex-none"
           >
-            <UserPlus className="w-4 h-4 mr-2" />
+            <UserPlus className="w-4 h-4 md:mr-2" />
+            <span className='hidden md:flex'>
             Пригласить
+            </span>
           </Button>
           <Button
             variant="outline"
@@ -98,14 +99,13 @@ const GroupPage = () => {
         </div>
       </div>
 
-      {/* Tabs */}
       <Tabs defaultValue="shopping" className="w-full">
         <TabsList className="grid w-full grid-cols-2 h-12 md:h-10 mb-6">
           <TabsTrigger value="shopping" className="text-base md:text-sm">
-            🛒 Покупки
+            Покупки
           </TabsTrigger>
           <TabsTrigger value="recipes" className="text-base md:text-sm">
-            👨‍🍳 Рецепты
+            Рецепты
           </TabsTrigger>
         </TabsList>
 

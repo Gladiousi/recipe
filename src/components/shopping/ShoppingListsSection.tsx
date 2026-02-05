@@ -14,7 +14,6 @@ interface ShoppingListsSectionProps {
 const ShoppingListsSection = ({ groupId, shoppingLists, onUpdate }: ShoppingListsSectionProps) => {
   const [createOpen, setCreateOpen] = useState(false);
 
-  // Разделяем на закрепленные и обычные
   const pinnedLists = shoppingLists.filter((list) => list.is_pinned);
   const regularLists = shoppingLists.filter((list) => !list.is_pinned);
 
@@ -23,13 +22,15 @@ const ShoppingListsSection = ({ groupId, shoppingLists, onUpdate }: ShoppingList
       <div className="flex items-center justify-between">
         <h2 className="text-lg md:text-xl font-semibold">Списки покупок</h2>
         <Button onClick={() => setCreateOpen(true)} size="sm" className="h-10">
-          <Plus className="w-4 h-4 mr-2" />
+          <Plus className="w-4 h-4 md:mr-2" />
+          <span className='hidden md:flex'>
           Создать список
+          </span>
         </Button>
       </div>
 
       {shoppingLists.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-xl" data-aos="fade-up">
+        <div className="text-center py-5 bg-gray-50 rounded-xl" data-aos="fade-up">
           <p className="text-gray-600 mb-4">Нет списков покупок</p>
           <Button onClick={() => setCreateOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
@@ -37,27 +38,26 @@ const ShoppingListsSection = ({ groupId, shoppingLists, onUpdate }: ShoppingList
           </Button>
         </div>
       ) : (
-        <>
-          {/* Закрепленные списки */}
+        <div className='flex flex-col space-y-4'>
           {pinnedLists.length > 0 && (
             <div className="space-y-3">
               <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
-                📌 Закрепленные
+                Закрепленные
               </h3>
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {pinnedLists.map((list, index) => (
                   <ShoppingListCard
                     key={list.id}
                     list={list}
                     onUpdate={onUpdate}
-                    index={index}
-                  />
+                    index={index} onDelete={function (listId: number): void {
+                      throw new Error('Function not implemented.');
+                    } }                  />
                 ))}
               </div>
             </div>
           )}
 
-          {/* Обычные списки */}
           {regularLists.length > 0 && (
             <div className="space-y-3">
               {pinnedLists.length > 0 && (
@@ -65,19 +65,20 @@ const ShoppingListsSection = ({ groupId, shoppingLists, onUpdate }: ShoppingList
                   Все списки
                 </h3>
               )}
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {regularLists.map((list, index) => (
                   <ShoppingListCard
                     key={list.id}
                     list={list}
                     onUpdate={onUpdate}
-                    index={index + pinnedLists.length}
-                  />
+                    index={index + pinnedLists.length} onDelete={function (listId: number): void {
+                      throw new Error('Function not implemented.');
+                    } }                  />
                 ))}
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
 
       <CreateShoppingListDialog

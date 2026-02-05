@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Bell, User as UserIcon } from 'lucide-react';
+import { Users, Bell, User as UserIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const MobileNav = () => {
@@ -10,11 +10,9 @@ const MobileNav = () => {
   };
 
   const navItems = [
-    { path: '/', icon: Home, label: 'Главная' },
-    { path: '/groups', icon: Users, label: 'Группы' },
+    { path: '/', icon: Users, label: 'Группы' },
     { path: '/notifications', icon: Bell, label: 'Уведомления' },
     { path: '/profile', icon: UserIcon, label: 'Профиль' },
-    { path: '/notifications', icon: Bell, label: 'Уведомления' }
   ];
 
   return (

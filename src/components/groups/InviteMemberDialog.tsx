@@ -67,7 +67,7 @@ const InviteMemberDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-card border-border">
+      <DialogContent className="sm:max-w-125 bg-card border-border">
         <DialogHeader>
           <DialogTitle>Пригласить участника</DialogTitle>
           <DialogDescription className="text-muted-foreground">

@@ -120,7 +120,7 @@ const NotificationsPage = () => {
                         >
                             <CardContent className="p-4 md:p-6">
                                 <div className="flex items-start gap-4">
-                                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <div className="w-12 h-12 md:w-14 md:h-14 bg-linear-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shrink-0">
                                         <Users className="w-6 h-6 md:w-7 md:h-7 text-primary-foreground" />
                                     </div>
 

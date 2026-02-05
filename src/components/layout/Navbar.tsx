@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { useAuthStore } from '@/lib/store/authStore';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Bell, LogOut, Menu, Moon, Sun } from 'lucide-react';
+import { Bell, LogOut, Moon, Sun } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import {
   DropdownMenu,
@@ -11,14 +10,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import Sidebar from './Sidebar';
 import { useTheme } from '@/hooks/useTheme';
 
 const Navbar = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   const handleLogout = () => {
@@ -30,30 +26,12 @@ const Navbar = () => {
     <nav className="bg-background border-b border-border px-4 md:px-6 py-3 md:py-4 top-0 left-0 right-0 z-50">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3 md:space-x-4">
-          {/* Mobile Menu Button */}
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-64">
-              <SheetHeader className="sr-only">
-                <SheetTitle>Меню навигации</SheetTitle>
-              </SheetHeader>
-              <div className="pt-4">
-                <Sidebar />
-              </div>
-            </SheetContent>
-          </Sheet>
-
           <h1 className="text-xl md:text-2xl font-bold text-primary flex items-center gap-2">
-            🛒 <span className="hidden sm:inline">ShopList</span>
+            <span className="hidden sm:inline">ShopList</span>
           </h1>
         </div>
 
         <div className="flex items-center space-x-2 md:space-x-4">
-          {/* Theme Toggle */}
           <Button
             variant="ghost"
             size="icon"

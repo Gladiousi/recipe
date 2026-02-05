@@ -68,7 +68,7 @@ const RecipeCard = ({ recipe, onUpdate, onDelete, index }: RecipeCardProps) => {
             )}
           </div>
         ) : (
-          <div className="relative h-48 bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 flex items-center justify-center">
+          <div className="relative h-48 bg-linear-to-br from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 flex items-center justify-center">
             <span className="text-6xl">👨‍🍳</span>
             {recipe.is_pinned && (
               <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-2 py-1 rounded-full flex items-center gap-1">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { recipesAPI } from '@/lib/api/recipes';
 import { Recipe } from '@/types';
 import {
@@ -36,18 +36,69 @@ const CreateRecipeDialog = ({
 }: CreateRecipeDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<RecipeForm>();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    setValue,
+    getValues,
+  } = useForm<RecipeForm>();
+
+  const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const insertAtCursor = (snippet: string) => {
+    const textarea = descriptionRef.current;
+    if (!textarea) return;
+
+    const value = getValues('description') || '';
+    const start = textarea.selectionStart ?? value.length;
+    const end = textarea.selectionEnd ?? value.length;
+
+    const before = value.slice(0, start);
+    const after = value.slice(end);
+
+    const nextValue = before + snippet + after;
+
+    setValue('description', nextValue, { shouldDirty: true });
+    requestAnimationFrame(() => {
+      textarea.focus();
+      const pos = before.length + snippet.length;
+      textarea.setSelectionRange(pos, pos);
+    });
+  };
+
+  const handleInsertHeading = () => {
+    insertAtCursor('\n## Заголовок\n');
+  };
+
+  const handleInsertIngredients = () => {
+    insertAtCursor(
+      '\n## Ингредиенты\n- Продукт 1\n- Продукт 2\n\n'
+    );
+  };
+
+  const handleInsertSteps = () => {
+    insertAtCursor(
+      '\n## Приготовление\n1. Шаг 1\n2. Шаг 2\n\n'
+    );
+  };
+
+  const handleInsertBold = () => {
+    insertAtCursor('**текст**');
+  };
 
   const onSubmit = async (data: RecipeForm) => {
     setIsLoading(true);
     setError('');
-    
+
     try {
       const formData = new FormData();
       formData.append('group', groupId.toString());
       formData.append('title', data.title);
       formData.append('description', data.description);
-      
+
       if (data.cooking_time) {
         formData.append('cooking_time', data.cooking_time);
       }
@@ -59,14 +110,13 @@ const CreateRecipeDialog = ({
       }
 
       const newRecipe = await recipesAPI.create(formData);
-      
-      // Убеждаемся что все поля есть
+
       const recipeWithDefaults: Recipe = {
         ...newRecipe,
         is_pinned: newRecipe.is_pinned ?? false,
         ingredients: newRecipe.ingredients ?? [],
       };
-      
+
       reset();
       onOpenChange(false);
       onSuccess(recipeWithDefaults);
@@ -80,7 +130,7 @@ const CreateRecipeDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto bg-card border-border">
+      <DialogContent className="sm:max-w-125 max-h-[90vh] overflow-y-auto bg-card border-border">
         <DialogHeader>
           <DialogTitle>Добавить рецепт</DialogTitle>
           <DialogDescription className="text-muted-foreground">
@@ -110,22 +160,68 @@ const CreateRecipeDialog = ({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Описание и приготовление *</label>
+
+            <div className="flex flex-wrap gap-2 mb-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-8 px-2 text-xs"
+                onClick={handleInsertHeading}
+              >
+                H2
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-8 px-2 text-xs"
+                onClick={handleInsertBold}
+              >
+                **Жирный**
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-8 px-2 text-xs"
+                onClick={handleInsertIngredients}
+              >
+                + Ингредиенты
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-8 px-2 text-xs"
+                onClick={handleInsertSteps}
+              >
+                + Шаги
+              </Button>
+            </div>
+
             <Textarea
               {...register('description', { required: 'Обязательное поле' })}
-              placeholder="Опишите рецепт... Поддерживается Markdown:
-              
+              ref={(el) => {
+                register('description').ref(el);
+                descriptionRef.current = el;
+              }}
+              placeholder={`Опишите рецепт... Поддерживается Markdown:
+
 ## Ингредиенты
-- Свекла - 2 шт
-- Капуста - 300г
+- Свекла — 2 шт
+- Капуста — 300 г
 
 ## Приготовление
 1. Нарезать свеклу
-2. Варить 30 минут"
+2. Варить 30 минут`}
               rows={8}
               className="font-mono text-sm bg-background border-input"
             />
             {errors.description && (
-              <p className="text-sm text-destructive">{errors.description.message}</p>
+              <p className="text-sm text-destructive">
+                {errors.description.message}
+              </p>
             )}
           </div>
 

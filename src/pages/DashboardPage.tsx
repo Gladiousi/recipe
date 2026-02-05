@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useGroupStore } from '@/lib/store/groupStore';
 import { useAuthStore } from '@/lib/store/authStore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, ShoppingBag, ChefHat } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const DashboardPage = () => {
@@ -15,8 +15,8 @@ const DashboardPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-20 md:pb-6">
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up">
+      {/* //TODO: перекинуть в группу */}
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up">
         <Card className="border-border shadow-lg">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -58,7 +58,7 @@ const DashboardPage = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       <div data-aos="fade-up" data-aos-delay="100">
         <div className="flex items-center justify-between mb-4">
@@ -80,13 +80,13 @@ const DashboardPage = () => {
             {groups.map((group, index) => (
               <Link key={group.id} to={`/group/${group.id}`}>
                 <Card
-                  className="border-border shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer h-full"
+                  className="border-border shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer h-full py-4"
                   data-aos="fade-up"
                   data-aos-delay={index * 50}
                 >
                   <CardHeader>
                     <div className="flex items-start justify-between">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center mb-3">
+                      <div className="w-12 h-12 bg-linear-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center mb-3">
                         <Users className="w-6 h-6 text-primary-foreground" />
                       </div>
                       {group.owner.id === user?.id && (
