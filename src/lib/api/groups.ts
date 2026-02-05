@@ -58,25 +58,25 @@ export const groupsAPI = {
     await api.post(`/groups/${groupId}/remove_member/`, { user_id: userId });
   },
 
-  sendInvitation: async (groupId: number, username: string) => {
-    const response = await api.post(`/groups/${groupId}/send_invitation/`, {
-      invitee_username: username,
+sendInvitation: async (groupId: number, username: string) => {
+    const response = await api.post(`/groups/${groupId}/send-invitation/`, {
+        invitee_username: username,
     });
     return response.data;
-  },
+},
 
-  getInvitations: async () => {
-    const response = await api.get<GroupInvitationResponse[]>('/groups/invitations/');
+getInvitations: async () => {
+    const response = await api.get<GroupInvitationResponse[]>('/invitations/');
     return response.data;
-  },
+},
 
-  acceptInvitation: async (invitationId: number) => {
-    const response = await api.post(`/groups/invitations/${invitationId}/accept/`);
+acceptInvitation: async (invitationId: number) => {
+    const response = await api.post(`/invitations/${invitationId}/accept/`);
     return response.data;
-  },
+},
 
-  declineInvitation: async (invitationId: number) => {
-    const response = await api.post(`/groups/invitations/${invitationId}/decline/`);
+declineInvitation: async (invitationId: number) => {
+    const response = await api.post(`/invitations/${invitationId}/decline/`);
     return response.data;
-  },
+},
 };
