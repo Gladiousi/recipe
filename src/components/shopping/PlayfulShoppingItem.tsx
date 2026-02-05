@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import * as React from 'react';
 import { ShoppingItem } from '@/types';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { Pin, Trash2, Edit } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { shoppingAPI } from '@/lib/api/shopping';
 import EditShoppingItemDialog from './EditShoppingItemDialog';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface PlayfulShoppingItemProps {
   item: ShoppingItem;
@@ -16,8 +16,8 @@ interface PlayfulShoppingItemProps {
   onDelete: (itemId: number) => void;
 }
 
-const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemProps) => {
-  const [editOpen, setEditOpen] = useState(false);
+const PlayfulShoppingItem = React.memo(({ item, onUpdate, onDelete }: PlayfulShoppingItemProps) => {
+  const [editOpen, setEditOpen] = React.useState(false);
 
   const handleToggleCheck = async () => {
     try {
@@ -87,67 +87,73 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
         onClick={handleToggleCheck}
       >
         <div className="relative shrink-0 mt-0.5">
-          <motion.div
-            initial={false}
-            animate={{ scale: item.is_checked ? 1.03 : 1 }}
-            transition={{ type: 'spring', stiffness: 450, damping: 24 }}
-          >
-            <Checkbox
-              checked={item.is_checked}
-              className={cn(
-                'h-5 w-5 transition-all duration-300 rounded-full',
-                item.is_checked
-                  ? 'border-primary bg-primary shadow-sm'
-                  : 'border-muted-foreground/40'
-              )}
-            />
-          </motion.div>
+          <Checkbox
+            checked={item.is_checked}
+            className={cn(
+              'h-5 w-5 transition-all duration-300 rounded-full',
+              item.is_checked
+                ? 'border-primary bg-primary shadow-sm'
+                : 'border-muted-foreground/40'
+            )}
+          />
         </div>
 
-        <div className="flex-1 relative min-w-0">
-          <div className="relative inline-block">
-            <p
-              className={cn(
-                'text-base font-medium transition-all duration-300',
-                item.is_checked && 'text-muted-foreground'
-              )}
-            >
-              {item.name}
-            </p>
+        <div className="flex-1 relative">
+          <p
+            className={cn(
+              'text-base font-medium transition-all duration-300',
+              item.is_checked && 'text-muted-foreground'
+            )}
+          >
+            {item.name}
+          </p>
 
-            <motion.svg
-              className="pointer-events-none absolute left-0 right-0 top-1/2 h-4 -translate-y-1/2"
-              viewBox="0 0 100 10"
-            >
-              <motion.path
-                d="M2 5 C 20 0, 40 10, 60 5 S 90 0, 98 5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-muted-foreground"
-                initial={false}
-                animate={{ pathLength: item.is_checked ? 1 : 0 }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
-              />
-            </motion.svg>
-          </div>
-
-          {(item.quantity || item.unit) && (
-            <motion.p
+          <motion.svg
+            width="340"
+            height="32"
+            viewBox="0 0 340 32"
+            className="absolute left-0 top-full w-full h-8 pointer-events-none z-20"
+            style={{ top: '50%', transform: 'translateY(-50%)' }}
+          >
+            <motion.path
+              d="M 10 16.91 s 79.8 -11.36 98.1 -11.34 c 22.2 0.02 -47.82 14.25 -33.39 22.02 c 12.61 6.77 124.18 -27.98 133.31 -17.28 c 7.52 8.38 -26.8 20.02 4.61 22.05 c 24.55 1.93 113.37 -20.36 113.37 -20.36"
+              vectorEffect="non-scaling-stroke"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeMiterlimit={10}
+              fill="none"
               initial={false}
               animate={{
-                opacity: item.is_checked ? 0.7 : 1,
-                y: item.is_checked ? 1 : 0,
+                pathLength: item.is_checked ? 1 : 0,
+                opacity: item.is_checked ? 1 : 0,
               }}
-              transition={{ duration: 0.2 }}
-              className="text-xs text-muted-foreground mt-1"
-            >
-              {item.quantity} {item.unit}
-            </motion.p>
-          )}
+              transition={{
+                pathLength: { duration: 0.7, ease: 'easeInOut' },
+                opacity: {
+                  duration: 0.01,
+                  delay: item.is_checked ? 0 : 0.7,
+                },
+              }}
+              className="stroke-muted-foreground dark:stroke-muted-foreground"
+            />
+          </motion.svg>
         </div>
 
-        <div className="flex items-center gap-1">
+        {(item.quantity || item.unit) && (
+          <motion.p
+            initial={false}
+            animate={{
+              opacity: item.is_checked ? 0.7 : 1,
+              y: item.is_checked ? 1 : 0,
+            }}
+            transition={{ duration: 0.25 }}
+            className="text-xs text-muted-foreground mt-1 ml-8"
+          >
+            {item.quantity} {item.unit}
+          </motion.p>
+        )}
+
+        <div className="flex items-center gap-1 ml-auto">
           <Button
             variant="ghost"
             size="icon"
@@ -189,14 +195,20 @@ const PlayfulShoppingItem = ({ item, onUpdate, onDelete }: PlayfulShoppingItemPr
         )}
       </motion.div>
 
-      <EditShoppingItemDialog
-        item={item}
-        open={editOpen}
-        onOpenChange={setEditOpen}
-        onSuccess={onUpdate}
-      />
+      <AnimatePresence>
+        {editOpen && (
+          <EditShoppingItemDialog
+            item={item}
+            open={editOpen}
+            onOpenChange={setEditOpen}
+            onSuccess={onUpdate}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
-};
+});
+
+PlayfulShoppingItem.displayName = 'PlayfulShoppingItem';
 
 export default PlayfulShoppingItem;
