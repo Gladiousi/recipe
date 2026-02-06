@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
+declare const VITE_API_URL: string;
+
+const API_URL = (VITE_API_URL as string) || 'http://localhost:8000/api';
 
 export const api = axios.create({
   baseURL: API_URL,
