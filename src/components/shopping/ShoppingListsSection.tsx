@@ -50,7 +50,7 @@ const ShoppingListsSection = ({ groupId, shoppingLists, onUpdate }: ShoppingList
                     key={list.id}
                     list={list}
                     onUpdate={onUpdate}
-                    index={index} onDelete={function (listId: number): void {
+                    index={index} onDelete={function (_listId: number): void {
                       throw new Error('Function not implemented.');
                     } }                  />
                 ))}
@@ -71,7 +71,7 @@ const ShoppingListsSection = ({ groupId, shoppingLists, onUpdate }: ShoppingList
                     key={list.id}
                     list={list}
                     onUpdate={onUpdate}
-                    index={index + pinnedLists.length} onDelete={function (listId: number): void {
+                    index={index + pinnedLists.length} onDelete={function (_listId: number): void {
                       throw new Error('Function not implemented.');
                     } }                  />
                 ))}
